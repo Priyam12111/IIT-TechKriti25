@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.scrollable-element {
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollable-element::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}

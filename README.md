@@ -1,12 +1,35 @@
-# React + Vite
+# FinStory Overview
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**FinStory** is an AI-powered financial storytelling platform designed to simplify complex financial data. By leveraging Large Language Models (LLMs), the project extracts key financial insights from company reports and transforms them into easy-to-understand narratives. The financial stories are then structured into a single JSON file, which serves as the final output for analysis and visualization.
 
-Currently, two official plugins are available:
+## Technical Workflow
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **Extract Financial Data**: Retrieve financial reports of selected companies (Reliance Industries, TCS, SBI) for FY24.
+2. **Process Data Using LLM**: The model interprets and converts financial data into a structured story format.
+3. **Generate JSON Output**: The final processed financial story is saved in a structured JSON file.
+4. **Frontend Display**: The data is visualized using a React-based frontend for better user interaction.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend**: React  
+- **Backend**: FAST  
+- **LLM Processing**: OpenAI / Other suitable LLMs  
+- **Data Handling**: JSON for storing structured financial narratives
+
+## Example
+
+An example financial story for TCS is included in the project (refer to the uploaded video for demonstration).
+
+## How to Use
+
+1. Run the backend to fetch and process financial reports.
+2. Generate financial stories using the LLM model.
+3. Store the financial story in a JSON format.
+4. Load the JSON data into the frontend for visualization.
+
+## Future Enhancements
+
+- Support for more companies and datasets.
+- Improved interactivity and financial insights visualization.
+- Enhanced storytelling techniques using AI-generated graphs and summaries.
+

@@ -1,127 +1,236 @@
 import React from "react";
-import { SymbolOverview, AdvancedChart } from "react-tradingview-embed";
-import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
-  Title,
+  LineElement,
+  PointElement,
   Tooltip,
   Legend,
+  Title,
+  Filler,
+  Decimation,
 } from "chart.js";
+import { Bar, Line } from "react-chartjs-2";
 
-// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  Title,
+  LineElement,
+  PointElement,
   Tooltip,
-  Legend
+  Legend,
+  Title,
+  Filler,
+  Decimation
 );
 
-const FinancialDashboard = ({
-  companySymbol = "NASDAQ:AAPL",
-  peers = ["MSFT", "GOOGL"],
-}) => {
-  // Cash Flow Data
-  const cashFlowData = {
-    labels: ["Operating", "Investing", "Financing"],
+const FinancialDashboard = () => {
+  // 1. Asset vs Liability Comparison (Grouped Bar Chart)
+  const balanceSheetData = {
+    labels: ["2020", "2021", "2022", "2023"],
     datasets: [
       {
-        label: "Cash Flow (Millions)",
-        data: [120, -45, 80],
-        backgroundColor: ["#4CAF50", "#F44336", "#2196F3"],
+        label: "Assets",
+        data: [45, 52, 67, 73],
+        backgroundColor: "rgba(75, 192, 192, 0.8)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 2,
+        borderRadius: 5,
+      },
+      {
+        label: "Liabilities",
+        data: [32, 38, 45, 51],
+        backgroundColor: "rgba(255, 99, 132, 0.8)",
+        borderColor: "rgba(255, 99, 132, 1)",
+        borderWidth: 2,
+        borderRadius: 5,
       },
     ],
   };
 
+  // 2. Cash Flow Breakdown (Waterfall Chart)
+  const cashFlowData = {
+    labels: ["Operating", "Investing", "Financing", "Net Change"],
+    datasets: [
+      {
+        label: "Cash Flow (USD)",
+        data: [120, -45, 80, 155],
+        backgroundColor: [
+          "rgba(75, 192, 192, 0.8)",
+          "rgba(255, 99, 132, 0.8)",
+          "rgba(255, 206, 86, 0.8)",
+          "rgba(153, 102, 255, 0.8)",
+        ],
+        borderColor: [
+          "rgba(75, 192, 192, 1)",
+          "rgba(255, 99, 132, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(153, 102, 255, 1)",
+        ],
+        borderWidth: 2,
+      },
+    ],
+  };
+
+  // 3. Peer Comparison (Radar Chart)
+  const peerComparisonData = {
+    labels: [
+      "Revenue Growth",
+      "Profit Margin",
+      "ROE",
+      "Debt/Equity",
+      "Market Cap",
+    ],
+    datasets: [
+      {
+        label: "Your Company",
+        data: [85, 75, 90, 60, 80],
+        backgroundColor: "rgba(75, 192, 192, 0.4)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        pointRadius: 5,
+      },
+      {
+        label: "Industry Average",
+        data: [70, 65, 75, 75, 70],
+        backgroundColor: "rgba(255, 99, 132, 0.4)",
+        borderColor: "rgba(255, 99, 132, 1)",
+        pointRadius: 5,
+      },
+    ],
+  };
+
+  // 4. Historical Stock Trends (Candlestick-like Line Chart)
+  const stockData = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    datasets: [
+      {
+        label: "Stock Price",
+        data: [150, 165, 158, 172, 160, 185],
+        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        tension: 0.4,
+        fill: true,
+        pointRadius: 5,
+        pointHoverRadius: 8,
+      },
+    ],
+  };
+
+  // Common chart options
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: "top" },
+      tooltip: {
+        mode: "index",
+        intersect: false,
+        backgroundColor: "rgba(0,0,0,0.9)",
+        titleFont: { size: 16 },
+        bodyFont: { size: 14 },
+        padding: 12,
+        callbacks: {
+          label: (context) => `$${context.parsed.y}M`,
+        },
+      },
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        title: { display: true, text: "Fiscal Year" },
+      },
+      y: {
+        grid: { color: "rgba(0,0,0,0.05)" },
+        title: { display: true, text: "USD (Millions)" },
+      },
+    },
+  };
+
   return (
-    <div className="container-fluid mt-4">
-      <h2 className="mb-4">Financial Analysis Dashboard</h2>
-
-      {/* First Row */}
-      <div className="row mb-4">
-        <div className="col-md-6 mb-4">
-          <div className="card h-100">
-            <div className="card-header">Asset vs Liability Comparison</div>
-            <div className="card-body">
-              <SymbolOverview
-                widgetProps={{
-                  symbols: [[companySymbol, "Your Company"]],
-                  chartOnly: false,
-                  width: "100%",
-                  height: 300,
-                  locale: "en",
-                  colorTheme: "light",
-                  gridLineColor: "#F0F3FA",
-                  fontColor: "#787B86",
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="col-md-6 mb-4">
-          <div className="card h-100">
-            <div className="card-header">Cash Flow Breakdown</div>
-            <div className="card-body">
-              <Bar
-                data={cashFlowData}
-                options={{ responsive: true, maintainAspectRatio: false }}
-                height={300}
-              />
-            </div>
-          </div>
+    <div className="dashboard-grid">
+      {/* Asset vs Liability */}
+      <div className="chart-card">
+        <h2>Balance Sheet Analysis</h2>
+        <div className="chart-container">
+          <Bar
+            data={balanceSheetData}
+            options={{
+              ...chartOptions,
+              plugins: {
+                ...chartOptions.plugins,
+                title: { display: true, text: "Assets vs Liabilities" },
+              },
+            }}
+          />
         </div>
       </div>
 
-      {/* Second Row */}
-      <div className="row mb-4">
-        <div className="col-md-12">
-          <div className="card">
-            <div className="card-header">Peer Comparison</div>
-            <div className="card-body">
-              <AdvancedChart
-                widgetProps={{
-                  symbols: [
-                    [companySymbol, "Your Company"],
-                    ...peers.map((peer) => [`NASDAQ:${peer}`, peer]),
-                  ],
-                  interval: "1M",
-                  width: "100%",
-                  height: 400,
-                  hide_side_toolbar: false,
-                }}
-              />
-            </div>
-          </div>
+      {/* Cash Flow Breakdown */}
+      <div className="chart-card">
+        <h2>Cash Flow Statement</h2>
+        <div className="chart-container">
+          <Bar
+            data={cashFlowData}
+            options={{
+              ...chartOptions,
+              indexAxis: "y",
+              plugins: {
+                ...chartOptions.plugins,
+                title: { display: true, text: "Cash Flow Breakdown" },
+              },
+            }}
+          />
         </div>
       </div>
 
-      {/* Third Row */}
-      <div className="row">
-        <div className="col-md-12">
-          <div className="card">
-            <div className="card-header">Historical Stock Price Trends</div>
-            <div className="card-body">
-              <AdvancedChart
-                widgetProps={{
-                  symbol: companySymbol,
-                  interval: "D",
-                  timezone: "Etc/UTC",
-                  theme: "light",
-                  style: "1",
-                  width: "100%",
-                  height: 500,
-                  hide_side_toolbar: true,
-                  allow_symbol_change: false,
-                  details: true,
-                }}
-              />
-            </div>
-          </div>
+      {/* Peer Comparison */}
+      <div className="chart-card">
+        <h2>Peer Benchmarking</h2>
+        <div className="chart-container">
+          <Line
+            data={peerComparisonData}
+            options={{
+              ...chartOptions,
+              scales: {
+                r: {
+                  beginAtZero: true,
+                  grid: { color: "rgba(0,0,0,0.1)" },
+                  ticks: { backdropColor: "rgba(255,255,255,0.8)" },
+                },
+              },
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Stock Trends */}
+      <div className="chart-card">
+        <h2>Price Performance</h2>
+        <div className="chart-container">
+          <Line
+            data={stockData}
+            options={{
+              ...chartOptions,
+              plugins: {
+                ...chartOptions.plugins,
+                annotation: {
+                  annotations: {
+                    trendLine: {
+                      type: "line",
+                      yMin: 160,
+                      yMax: 160,
+                      borderColor: "rgba(255, 99, 132, 0.8)",
+                      borderWidth: 2,
+                      borderDash: [5, 5],
+                    },
+                  },
+                },
+              },
+            }}
+          />
         </div>
       </div>
     </div>

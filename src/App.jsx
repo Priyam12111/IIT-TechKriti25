@@ -10,6 +10,7 @@ import "./App.css";
 
 const App = () => {
   const [hasCompany, setHasCompany] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   return (
     <BrowserRouter>
@@ -22,8 +23,10 @@ const App = () => {
               <HeroSection
                 hasCompany={hasCompany}
                 setHasCompany={setHasCompany}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
               />
-              {hasCompany && <NarrativeJourney />}
+              {hasCompany && <NarrativeJourney searchTerm={searchTerm} />}
             </>
           }
         />

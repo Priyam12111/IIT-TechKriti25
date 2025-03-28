@@ -2,8 +2,12 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { useEffect, useState } from "react";
 
-const HeroSection = ({ hasCompany, setHasCompany }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+const HeroSection = ({
+  hasCompany,
+  setHasCompany,
+  searchTerm,
+  setSearchTerm,
+}) => {
   const Globe = () => {
     return (
       <mesh>
@@ -39,6 +43,20 @@ const HeroSection = ({ hasCompany, setHasCompany }) => {
     "HDFC Bank",
     "Infosys",
   ];
+
+  const companiesShortForm = [
+    "RIL",
+    "IOC",
+    "LIC",
+    "ONGC",
+    "SBI",
+    "TAMO",
+    "TATASTEEL",
+    "TCS",
+    "HDFCBANK",
+    "INFY",
+  ];
+
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);

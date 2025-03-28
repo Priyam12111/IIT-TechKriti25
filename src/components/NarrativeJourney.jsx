@@ -1,47 +1,16 @@
-import { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { FiClock, FiMap, FiTrendingUp, FiUsers } from "react-icons/fi";
 import company from "./company.json";
 import FinancialDashboard from "./FinancialDashboard";
 
-const NarrativeJourney = () => {
+const NarrativeJourney = ({ searchTerm }) => {
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: sectionRef });
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const milestones = [
-    {
-      year: 2010,
-      title: "Foundation",
-      icon: <FiMap />,
-      content:
-        "Founded with a vision to revolutionize the financial industry through technology",
-      color: "#006BFF",
-    },
-    {
-      year: 2014,
-      title: "First Breakthrough",
-      icon: <FiTrendingUp />,
-      content: "Launched flagship product achieving 500k users in first year",
-      color: "#00C48C",
-    },
-    {
-      year: 2018,
-      title: "Global Expansion",
-      icon: <FiUsers />,
-      content: "Opened offices in 3 continents, team grew to 200+ members",
-      color: "#FF6B00",
-    },
-    {
-      year: 2022,
-      title: "Market Leadership",
-      icon: <FiClock />,
-      content: "Recognized as industry leader serving over 5 million clients",
-      color: "#FFD700",
-    },
-  ];
-
+  const searchTermIndex = company.findIndex((item) =>
+    item.company.toLowerCase().startsWith(searchTerm.toLowerCase())
+  );
+  console.log(searchTermIndex, searchTerm);
   return (
     <section className="relative bg-[#0A1A2F] py-20" ref={sectionRef}>
       {/* Progress Indicator */}
@@ -110,7 +79,7 @@ const NarrativeJourney = () => {
                       .replace(/\b\w/g, (l) => l.toUpperCase())}
                   </h4>
                   <p className="text-white/80 mt-2">
-                    {Object.values(company[0].stats[item]).join("\n\n")}
+                    {company[searchTermIndex].stats}
                   </p>
                 </motion.div>
               ))}
@@ -128,7 +97,7 @@ const NarrativeJourney = () => {
         reverse
       >
         <FinancialDashboard
-          companySymbol="NASDAQ:AAPL"
+          companySymbol="AAPL"
           peers={["MSFT", "GOOGL", "AMZN"]}
         />
       </ChapterSection>
@@ -139,9 +108,7 @@ const NarrativeJourney = () => {
         subtitle="Decode the Narrative"
         index={3}
       >
-        <p className="text-white/80 mt-8">
-          {Object.values(company[0].about).join(", ")}
-        </p>
+        <p className="text-white/80 mt-8">{company[searchTermIndex].about}</p>
       </ChapterSection>
 
       <ChapterSection
@@ -151,112 +118,18 @@ const NarrativeJourney = () => {
         reverse
       >
         <p className="text-white/80 mt-8">
-          {Object.values(company[0].about).join(", ")}
+          {company[searchTermIndex].overview}
         </p>
       </ChapterSection>
       <ChapterSection
-        title="Company Story"
-        subtitle="A Journey of Innovation and Growth"
-        index={4}
+        title="The Simple Story"
+        subtitle="Layman's View"
+        index={5}
         reverse
       >
-        <div
-          ref={ref}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start"
-        >
-          {/* Text Content */}
-          <motion.div
-            className="space-y-8 relative"
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
-          >
-            <h3 className="text-3xl font-bold text-white"></h3>
-
-            <p className="text-white/80 text-lg leading-relaxed"></p>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 bg-white/5 rounded-xl backdrop-blur-sm">
-                <div className="text-blue-400 text-2xl mb-2">15M+</div>
-                <div className="text-white/80">Monthly Users</div>
-              </div>
-              <div className="p-4 bg-white/5 rounded-xl backdrop-blur-sm">
-                <div className="text-green-400 text-2xl mb-2">200%</div>
-                <div className="text-white/80">YoY Growth</div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Interactive Timeline */}
-          <div className="relative h-full pl-8 border-l-2 border-white/10">
-            {milestones.map((milestone, index) => (
-              <motion.div
-                key={milestone.year}
-                className="relative mb-12 group"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: index * 0.2 }}
-              >
-                <div
-                  className="absolute -left-[29px] top-0 w-12 h-12 rounded-full flex items-center justify-center border-2 backdrop-blur-sm"
-                  style={{
-                    backgroundColor: `${milestone.color}20`,
-                    borderColor: milestone.color,
-                  }}
-                >
-                  <span className="text-white">{milestone.icon}</span>
-                </div>
-                <div className="ml-8">
-                  <div className="flex items-center gap-4 mb-2">
-                    <div
-                      className="text-xl font-bold"
-                      style={{ color: milestone.color }}
-                    >
-                      {milestone.year}
-                    </div>
-                    <div className="text-white/80 text-sm">
-                      {milestone.title}
-                    </div>
-                  </div>
-                  <p className="text-white/80 text-sm leading-relaxed">
-                    {milestone.content}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-
-            {/* Animated Progress Line */}
-            <motion.div
-              className="absolute left-0 top-0 w-0.5 bg-gradient-to-b from-blue-400 to-green-400"
-              initial={{ height: 0 }}
-              animate={isInView ? { height: "100%" } : {}}
-              transition={{ duration: 2, ease: "easeInOut" }}
-            />
-          </div>
-        </div>
-
-        {/* Floating Elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(10)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-white rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                scale: [0, 1, 0],
-                opacity: [0, 0.8, 0],
-              }}
-              transition={{
-                duration: 2 + Math.random() * 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
-        </div>
+        <p className="text-white/80 mt-8">
+          {company[searchTermIndex].layman_story}
+        </p>
       </ChapterSection>
     </section>
   );

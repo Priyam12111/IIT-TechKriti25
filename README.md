@@ -1,6 +1,7 @@
 # FinStory Overview
 
 **FinStory** is an AI-powered financial storytelling platform designed to simplify complex financial data. By leveraging Large Language Models (LLMs), the project extracts key financial insights from company reports and transforms them into easy-to-understand narratives. The financial stories are then structured into a single JSON file, which serves as the final output for analysis and visualization.
+
 ![Screenshot 2025-03-28 083237](https://github.com/user-attachments/assets/df2b9a71-7f17-4a3d-9afb-ab413e28d30b)
 
 ## Technical Workflow

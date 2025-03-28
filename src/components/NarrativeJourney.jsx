@@ -11,6 +11,19 @@ const NarrativeJourney = ({ searchTerm }) => {
     item.company.toLowerCase().startsWith(searchTerm.toLowerCase())
   );
   console.log(searchTermIndex, searchTerm);
+  const tickers = {
+    "Reliance Industries Limited": "RELIANCE",
+    "Indian Oil Corporation": "IOC",
+    "Life Insurance Corporation of India (LIC)": "LICI",
+    "Oil and Natural Gas Corporation (ONGC)": "ONGC",
+    "State Bank of India (SBI)": "SBIN",
+    "Tata Motors": "TATAMOTORS",
+    "Tata Steel": "TATASTEEL",
+    "Tata Consultancy Services (TCS)": "TCS",
+    "HDFC Bank": "HDFCBANK",
+    Infosys: "INFY",
+  };
+  const cticker = tickers[company[searchTermIndex].company.replace(/\s+/g, "")];
   return (
     <section className="relative bg-[#0A1A2F] py-20" ref={sectionRef}>
       {/* Progress Indicator */}
@@ -97,8 +110,8 @@ const NarrativeJourney = ({ searchTerm }) => {
         reverse
       >
         <FinancialDashboard
-          companySymbol="AAPL"
-          peers={["MSFT", "GOOGL", "AMZN"]}
+          companySymbol={cticker}
+          peers={company[searchTermIndex].peers}
         />
       </ChapterSection>
 

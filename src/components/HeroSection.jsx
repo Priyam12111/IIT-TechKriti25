@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { useEffect, useState } from "react";
-
+import Chatbot from "./Chatbot";
 const HeroSection = ({
   hasCompany,
   setHasCompany,
@@ -44,25 +44,22 @@ const HeroSection = ({
     "Infosys",
   ];
 
-  const companiesShortForm = [
-    "RIL",
-    "IOC",
-    "LIC",
-    "ONGC",
-    "SBI",
-    "TAMO",
-    "TATASTEEL",
-    "TCS",
-    "HDFCBANK",
-    "INFY",
-  ];
-
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
 
     if (companies.includes(value)) {
       setHasCompany(true);
+      setTimeout(() => {
+        const container = document.querySelector(".hero-section");
+        if (container.style.position === "static") {
+          container.style.position = "relative";
+        }
+        window.scrollTo({
+          top: container.scrollHeight,
+          behavior: "smooth",
+        });
+      }, 2000);
     } else {
       setHasCompany(false);
     }
@@ -83,6 +80,7 @@ const HeroSection = ({
           <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
         </Canvas>
       </div>
+      <Chatbot />
 
       {/* Content */}
       <div className="relative z-30 flex flex-col items-center justify-center h-full text-center px-4 py-16">
